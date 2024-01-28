@@ -7,7 +7,7 @@ warnings.simplefilter("ignore", UserWarning)
 
 # Importando os dados
 
-# Planilha linkker
+# Planilha linkkera
 linkker_df = pd.read_excel('linkker.xlsx')
 
 # Planilha das exposições
@@ -30,13 +30,11 @@ em_linha = mix_total_df['RMS']
 linkker_df['NÚMERO DA LOJA'] = linkker_df['NÚMERO DA LOJA'].astype(int)
 
 linkker_df = linkker_df[
-    (linkker_df['NÚMERO DA LOJA'].isin(lojas_validas)) &  # Verifica se o produto está em linha
-    (linkker_df['SIGLA DO PONTO'].isin(posicoes_compativeis)) &  # Verifica se a NOME DO PONTO COMERCIALIZADO é valida
+    (linkker_df['NÚMERO DA LOJA'].isin(lojas_validas)) & # Verifica se a loja está na lista 
+    (linkker_df['SIGLA DO PONTO'].isin(posicoes_compativeis)) &  # Verifica se a posicao é valida
     (~linkker_df['CÓDIGO SKU'].isnull()) &  # Verifica se o campo código está vazio
      (linkker_df['CÓDIGO SKU'].isin(em_linha))  # Verifica se o produto está em linha (na rede)
     ]
-
-
 
 
 # Retira as colunas que não vai ser útil para essa análise

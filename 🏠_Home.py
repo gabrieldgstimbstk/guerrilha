@@ -1,39 +1,44 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-from st_pages import Page, show_pages, add_page_title
 
-# Define a largura desejada em pixels
-largura_explicita = 800
-
-# Adiciona um estilo CSS para ajustar a largura da interface
-st.markdown(f"""
-    <style>
-        .reportview-container .main .block-container {{
-            max-width: {largura_explicita}px;
-        }}
-    </style>
-""", unsafe_allow_html=True)
+st.set_page_config(page_title='Home',
+                   page_icon='🏠',
+                   layout='wide'
+                   )
 
 df = pd.read_excel('relatório_agrupado_guerrilha.xlsx')
-print(df.info())
-
-add_page_title()
 
 lojas_disponiveis = ['Rede'] + list(df['loja'].unique())
-selected_loja = st.selectbox('Selecione a loja', lojas_disponiveis)
 
+selected_loja = st.multiselect('Selecione a Loja', lojas_disponiveis, default='Rede')
 
-if selected_loja == 'Rede':
-    filtered_df = df
+if not selected_loja:
+    st.error('Por Favor, Selecione pelo menos uma opção!')
+
 else:
-    filtered_df = df[df['loja'] == selected_loja]
+    if selected_loja:
+        if 'Rede' in selected_loja:
+            filtered_df = df
+        else:
+            filtered_df = df[df['loja'].isin(selected_loja)]
 
-selected_comprador = st.selectbox('Selecione o comprador', filtered_df['NOME_COMPRADOR'].unique())
-filtered_df = filtered_df[filtered_df['NOME_COMPRADOR'] == selected_comprador]
 
-filtered_df['analisar'] = filtered_df['analisar'].replace('⚠️ Atenção Expositor Maior que a venda!', '⚠️').replace('✅ Ok', '✅')
+compradores_disponiveis = ['Todos Compradores'] + list(df['NOME_COMPRADOR'].unique())
+selected_comprador = st.selectbox('Selecione o comprador', compradores_disponiveis)
 
+if selected_comprador != 'Todos Compradores':
+    filtered_df = filtered_df[filtered_df['NOME_COMPRADOR'] == selected_comprador]
+
+tipo_analisar = st.multiselect(
+    'Selecione a Análise',
+    list(filtered_df['analisar'].unique())
+)
+
+
+if tipo_analisar:
+    filtered_df = filtered_df[filtered_df['analisar'].isin(tipo_analisar)]
+# filtered_df['analisar'] = filtered_df['analisar'].replace('⚠️ Atenção Expositor Maior que a venda!', '⚠️').replace('✅ Ok', '✅')
 
 filtered_df['razao_expositor_v30'] = filtered_df['qtd_expositor_posicao'] / filtered_df['venda_v30']
 filtered_df = filtered_df.sort_values(by='razao_expositor_v30', ascending=False)
@@ -63,10 +68,3 @@ if st.button('Exportar Dados para Excel'):
     filtered_df.to_excel('dados_exportados.xlsx', index=False)
     st.success('Dados exportados com sucesso!')
 
-
-show_pages(
-    [
-        Page('app.py', 'Visualização Interativa', '🏠'),
-        Page('pages_streamlit/incoformidades.py', 'Inconformidades', '⚠️'),
-    ]
-)

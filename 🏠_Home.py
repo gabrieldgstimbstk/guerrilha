@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
 
 st.set_page_config(page_title='Home',
                    page_icon='🏠',
@@ -54,6 +53,7 @@ colunas_renomear = {
     'qtd_expositor_posicao': 'Expositor',
     'analisar': 'Análise',
 }
+
 filtered_df_display.rename(columns=colunas_renomear, inplace=True)
 
 if selected_loja == 'Rede':

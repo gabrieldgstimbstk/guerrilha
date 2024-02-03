@@ -68,15 +68,16 @@ itens_mapeados['Saldo CD'] = pd.to_numeric(itens_mapeados['Saldo CD'].apply(ajus
 
 itens_mapeados['Análise'] = ''
 sistematicas_validas = [1] 
-
-
+moveis = ['ILHA', 'PG', 'PE']
 for index, row in itens_mapeados.iterrows():
-    if row['Sistematica'] not in sistematicas_validas:
+    if pd.isna(row['Produto']):
+        itens_mapeados.at[index, 'Análise'] = '🚨 - Item fora de linha mapeado!'
+    elif row['Sistematica'] not in sistematicas_validas:
         itens_mapeados.at[index, 'Análise'] = '🚫 - Item Sistemática Diferente de 1'
     elif row['Saldo CD'] == 0:
         itens_mapeados.at[index, 'Análise'] = '⚠️ - Item Em Ruptura no CD!'
-    elif pd.isna(row['Saldo CD']):
-        itens_mapeados.at[index, 'Análise'] = '🚨 - Item fora de linha mapeado!'
+    elif row['Móvel'] not in moveis:
+        itens_mapeados.at[index, 'Análise'] = '⚠️ - Movel incopatível!'
     else:
         itens_mapeados.at[index, 'Análise'] = '✅ - Saldo CD Apto'
 

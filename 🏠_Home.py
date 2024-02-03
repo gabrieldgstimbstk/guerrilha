@@ -1,8 +1,5 @@
 import streamlit as st
 import pandas as pd
-import time
-
-from xarray import align
 
 st.set_page_config(page_title='Home',
                    page_icon='🏠',
@@ -29,7 +26,7 @@ with st.container(height=180):
 st.subheader("Relatórios Disponíveis ✅")
 
 
-relatorios_disp = {'• 🚩 Itens Mapeados Sem Saldo no CD':'&mdash; Contém os itens que foram mapeados e :red[não temos saldo no CD] ainda!',
+relatorios_disp = {'• 🚩 Itens Mapeados Sem Saldo no CD':'&mdash; Contém os itens que foram mapeados e :red[não temos saldo no CD] ainda! E outras **Incompatibilidades**',
                    '• 📦 Análise de Excesso': '&mdash; Contém os itens onde o que foram mapeados e :red[irão em excesso] para as lojas!',
                    '• 🤖 Forma de Cálculo': '&mdash; Contém a informação detalhada, método de cálculo explicado **:blue[passo-a-passo]**.',
                    '• 🕹️ Simulador de expositor': '&mdash; Aqui você pode simular   quantidade que vai enviar por produto loja, **:green[ideal para planejar exposições especiais!]**',

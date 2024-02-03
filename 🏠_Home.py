@@ -1,70 +1,41 @@
 import streamlit as st
 import pandas as pd
+import time
+
+from xarray import align
 
 st.set_page_config(page_title='Home',
                    page_icon='🏠',
-                   layout='wide'
+                   layout='centered'
                    )
 
-df = pd.read_excel('relatório_agrupado_guerrilha.xlsx')
+st.image('images\logo_bistek.png',output_format='PNG',use_column_width='never')
 
-lojas_disponiveis = ['Rede'] + list(df['loja'].unique())
+st.divider()
+st.title("Análise Guerrilha")
+st.caption('Bem vindo(a) este é um Dashboard Desenvolvido usando Python.')
 
-selected_loja = st.multiselect('Selecione a Loja', lojas_disponiveis, default='Rede')
+with st.container(height=180):
+    st.markdown('''Análise  preventiva para garantir que as lojas estejam abastecidas na medida certa, evitando quaisquer **:red[excessos]** de produtos:
+                ''')
+    
+    st.markdown('''Que seja rápida⚡ de identificar e saber qual ação tomar para **:green[resolver]**.
+                ''')
 
-if not selected_loja:
-    st.error('Por Favor, Selecione pelo menos uma opção!')
+    st.markdown('''O Relatório é separado por páginas estruturadas para ser **:green[simples]** 💡 e **:green[intuitiva]** 🧠.
+                ''')
 
-else:
-    if selected_loja:
-        if 'Rede' in selected_loja:
-            filtered_df = df
-        else:
-            filtered_df = df[df['loja'].isin(selected_loja)]
-
-
-compradores_disponiveis = ['Todos Compradores'] + list(df['NOME_COMPRADOR'].unique())
-selected_comprador = st.selectbox('Selecione o comprador', compradores_disponiveis)
-
-if selected_comprador != 'Todos Compradores':
-    filtered_df = filtered_df[filtered_df['NOME_COMPRADOR'] == selected_comprador]
-
-tipo_analisar = st.multiselect(
-    'Selecione a Análise',
-    list(filtered_df['analisar'].unique())
-)
+    
+st.subheader("Relatórios Disponíveis ✅")
 
 
-if tipo_analisar:
-    filtered_df = filtered_df[filtered_df['analisar'].isin(tipo_analisar)]
-# filtered_df['analisar'] = filtered_df['analisar'].replace('⚠️ Atenção Expositor Maior que a venda!', '⚠️').replace('✅ Ok', '✅')
-
-filtered_df['razao_expositor_v30'] = filtered_df['qtd_expositor_posicao'] / filtered_df['venda_v30']
-filtered_df = filtered_df.sort_values(by='razao_expositor_v30', ascending=False)
-
-
-filtered_df_display = filtered_df[['loja', 'codigo_sku', 'DESCRICAO', 'venda_v30', 'qtd_expositor_posicao', 'analisar']]
-filtered_df_display['codigo_sku'] = filtered_df_display['codigo_sku'].astype(str)
-colunas_renomear = {
-    'loja': 'Loja',
-    'codigo_sku': 'Código',
-    'DESCRICAO': 'Produto',
-    'venda_v30': 'V30 dias',
-    'qtd_expositor_posicao': 'Expositor',
-    'analisar': 'Análise',
+relatorios_disp = {'• 🚩 Itens Mapeados Sem Saldo no CD':'&mdash; Contém os itens que foram mapeados e :red[não temos saldo no CD] ainda!',
+                   '• 📦 Análise de Excesso': '&mdash; Contém os itens onde o que foram mapeados e :red[irão em excesso] para as lojas!',
+                   '• 🤖 Forma de Cálculo': '&mdash; Contém a informação detalhada, método de cálculo explicado **:blue[passo-a-passo]**.',
+                   '• 🕹️ Simulador de expositor': '&mdash; Aqui você pode simular   quantidade que vai enviar por produto loja, **:green[ideal para planejar exposições especiais!]**',
 }
-
-filtered_df_display.rename(columns=colunas_renomear, inplace=True)
-
-if selected_loja == 'Rede':
-    st.write(f'Dados para a {selected_loja}:')
-else:
-    st.write(f'Dados para a loja {selected_loja}:')
-
-st.dataframe(filtered_df_display, hide_index=True, use_container_width=True)
-
-
-if st.button('Exportar Dados para Excel'):
-    filtered_df.to_excel('dados_exportados.xlsx', index=False)
-    st.success('Dados exportados com sucesso!')
+for k,v in relatorios_disp.items():
+    with st.container(height=100):
+        st.markdown(k)
+        st.caption(v)
 

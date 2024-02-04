@@ -1,3 +1,4 @@
+from numpy import place
 import streamlit as st
 import pandas as pd
 
@@ -9,13 +10,12 @@ st.set_page_config(page_title='Análise Excesso',
 
 df = pd.read_excel('relatório_agrupado_guerrilha.xlsx')
 
-lojas_disponiveis = ['Rede'] + list(df['loja'].unique())
+lojas_disponiveis =list(df['loja'].unique())
 
-selected_loja = st.multiselect('Selecione a Loja', lojas_disponiveis, default='Rede')
+selected_loja = st.multiselect('Selecione a Loja', lojas_disponiveis, placeholder='Selecione uma ou mais Lojas')
 
 if not selected_loja:
-    st.error('Por Favor, Selecione pelo menos uma opção!')
-
+    filtered_df = df
 else:
     if selected_loja:
         if 'Rede' in selected_loja:
@@ -57,10 +57,10 @@ colunas_renomear = {
 
 filtered_df_display.rename(columns=colunas_renomear, inplace=True)
 
-if selected_loja == 'Rede':
-    st.write(f'Dados para a {selected_loja}:')
-else:
-    st.write(f'Dados para a loja {selected_loja}:')
+if len(selected_loja) > 0:
+    st.write(f'Dados para a loja {", ".join(map(str, selected_loja))}:')
+
+    
 
 st.dataframe(filtered_df_display, hide_index=True, use_container_width=True)
 

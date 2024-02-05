@@ -7,7 +7,7 @@ st.set_page_config(page_title='Home',
                    )
 
 # st.image('images\logo_bistek.png',output_format='PNG',use_column_width='never')
-st.image('images\\logo_bistek.png', output_format='PNG', use_column_width='never')
+st.image('images/logo_bistek.png', output_format='PNG', use_column_width='never')
 
 
 st.divider()

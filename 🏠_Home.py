@@ -6,11 +6,13 @@ st.set_page_config(page_title='Home',
                    layout='centered'
                    )
 
-st.image('images\logo_bistek.png',output_format='PNG',use_column_width='never')
+# st.image('images\logo_bistek.png',output_format='PNG',use_column_width='never')
+st.image('images\\logo_bistek.png', output_format='PNG', use_column_width='never')
+
 
 st.divider()
 st.title("Análise Guerrilha")
-st.caption('Bem vindo(a) este é um Dashboard Desenvolvido usando Python.')
+st.caption('Bem vindo( a) este é um Dashboard Desenvolvido usando Python.')
 
 with st.container(height=180):
     st.markdown('''Análise  preventiva para garantir que as lojas estejam abastecidas na medida certa, evitando quaisquer **:red[excessos]** de produtos:

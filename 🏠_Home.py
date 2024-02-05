@@ -14,7 +14,7 @@ st.divider()
 st.title("Análise Guerrilha")
 st.caption('Bem vindo( a) este é um Dashboard Desenvolvido usando Python.')
 
-with st.container(height=180):
+with st.container(border=True):
     st.markdown('''Análise  preventiva para garantir que as lojas estejam abastecidas na medida certa, evitando quaisquer **:red[excessos]** de produtos:
                 ''')
     
@@ -34,7 +34,7 @@ relatorios_disp = {'• 🚩 Itens Mapeados Sem Saldo no CD':'&mdash; Contém os
                    '• 🕹️ Simulador de expositor': '&mdash; Aqui você pode simular   quantidade que vai enviar por produto loja, **:green[ideal para planejar exposições especiais!]**',
 }
 for k,v in relatorios_disp.items():
-    with st.container(height=100):
+    with st.container(border=True):
         st.markdown(k)
         st.caption(v)
 

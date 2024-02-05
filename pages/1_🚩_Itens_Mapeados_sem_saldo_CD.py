@@ -3,7 +3,7 @@ import streamlit as st
 import pandas as pd
 st.set_page_config(page_title='Itens Sem saldo CD',page_icon='🚩',layout='wide')
 
-dados = pd.read_excel('relatorios_streamlit\itens_mapeados_sem_saldo_cd.xlsx')
+dados = pd.read_excel('relatorios_streamlit/itens_mapeados_sem_saldo_cd.xlsx')
 dados['Codigo'] = dados['Codigo'].astype(str)
 dados = dados.sort_values('Loja', ascending=True)
 dados['Saldo CD'] = dados['Saldo CD'].astype(str)

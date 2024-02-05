@@ -68,4 +68,3 @@ st.dataframe(filtered_df_display, hide_index=True, use_container_width=True)
 if st.button('Exportar Dados para Excel'):
     filtered_df.to_excel('dados_exportados.xlsx', index=False)
     st.success('Dados exportados com sucesso!')
-
